@@ -1,414 +1,837 @@
-import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Camera, Video, Calendar, Phone, Mail, MapPin, Check, Menu, X, Star, ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoShot Pro - Photography Business Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-export default function PhotoShotBusinessApp() {
-  const [selectedPackage, setSelectedPackage] = useState("Wedding Shoot");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showBookingModal, setShowBookingModal] = useState(false);
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
 
-  const packages = [
-    { 
-      title: "Wedding Shoot", 
-      price: "KSh 25,000", 
-      desc: "Full wedding photography + cinematic video coverage.",
-      features: ["8 hours coverage", "500+ edited photos", "10-min highlight video", "Online gallery"]
-    },
-    { 
-      title: "Birthday Shoot", 
-      price: "KSh 8,000", 
-      desc: "Professional birthday photography and highlight videos.",
-      features: ["3 hours coverage", "150+ edited photos", "2-min highlight video", "Instant prints"]
-    },
-    { 
-      title: "Business Promo", 
-      price: "KSh 15,000", 
-      desc: "Product videos, branding photos, and promo content.",
-      features: ["4 hours coverage", "300+ edited photos", "60-sec promo video", "Commercial license"]
-    },
-  ];
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
 
-  const portfolioImages = [
-    { id: 1, title: "Wedding", category: "Wedding" },
-    { id: 2, title: "Birthday", category: "Events" },
-    { id: 3, title: "Product", category: "Commercial" },
-    { id: 4, title: "Corporate", category: "Commercial" },
-    { id: 5, title: "Engagement", category: "Wedding" },
-    { id: 6, title: "Baby Shower", category: "Events" },
-  ];
+        .header {
+            background: #1a1a2e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
 
-  const testimonials = [
-    { name: "Sarah M.", text: "Amazing wedding photos! Made our day perfect.", rating: 5 },
-    { name: "James K.", text: "Professional and creative. Highly recommend for business shoots.", rating: 5 },
-    { name: "Linda W.", text: "Birthday memories captured beautifully. Thank you!", rating: 4 },
-  ];
+        .header h1 {
+            color: #e94560;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
 
-  const handleBooking = () => {
-    const message = `Hi LensCraft Studio! I'd like to book the ${selectedPackage} package.`;
-    window.open(`https://wa.me/254700000000?text=${encodeURIComponent(message)}`, '_blank');
-  };
+        .header h1 span {
+            color: white;
+        }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2"
-            >
-              <Camera className="w-8 h-8 text-blue-600" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                LensCraft Studio
-              </span>
-            </motion.div>
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-8">
-              <a href="#services" className="text-gray-600 hover:text-blue-600 transition-colors">Services</a>
-              <a href="#packages" className="text-gray-600 hover:text-blue-600 transition-colors">Packages</a>
-              <a href="#portfolio" className="text-gray-600 hover:text-blue-600 transition-colors">Portfolio</a>
-              <a href="#testimonials" className="text-gray-600 hover:text-blue-600 transition-colors">Reviews</a>
-              <Button onClick={() => setShowBookingModal(true)} className="bg-blue-600 hover:bg-blue-700">
-                Book Now
-              </Button>
+        .nav-btn {
+            background: #16213e;
+            color: white;
+            border: 2px solid transparent;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #e94560;
+            border-color: #e94560;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #1a1a2e;
+            border-bottom: 3px solid #e94560;
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #e94560;
+            outline: none;
+        }
+
+        .btn {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #c73e54;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #16213e;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .booking-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .booking-card:hover {
+            border-color: #e94560;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .booking-info h3 {
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+
+        .booking-detail {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .booking-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 5px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .client-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .package-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .package-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e94560;
+            margin: 15px 0;
+        }
+
+        .package-card ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .package-card li {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+            }
+            
+            .booking-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>Photo<span>Shot</span> Pro</h1>
+            <div class="nav-menu">
+                <button class="nav-btn active" onclick="showSection('dashboard', this)">📊 Dashboard</button>
+                <button class="nav-btn" onclick="showSection('bookings', this)">📅 Bookings</button>
+                <button class="nav-btn" onclick="showSection('new-booking', this)">➕ New Booking</button>
+                <button class="nav-btn" onclick="showSection('clients', this)">👥 Clients</button>
+                <button class="nav-btn" onclick="showSection('packages', this)">💎 Packages</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Dashboard -->
+            <div id="dashboard" class="section active">
+                <h2 style="margin-bottom: 20px;">Dashboard Overview</h2>
+                <div class="stats-grid" id="statsGrid"></div>
+                
+                <div class="form-section">
+                    <h3 class="form-title">Recent Bookings</h3>
+                    <div id="recentBookings"></div>
+                </div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <Button 
-              variant="ghost" 
-              className="md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X /> : <Menu />}
-            </Button>
-          </div>
+            <!-- All Bookings -->
+            <div id="bookings" class="section">
+                <h2 style="margin-bottom: 20px;">All Bookings</h2>
+                <div style="margin-bottom: 20px;">
+                    <select id="bookingFilter" onchange="filterBookings()" style="padding: 10px; border: 2px solid #ddd; border-radius: 5px;">
+                        <option value="all">All Bookings</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="exportBookings()" style="margin-left: 10px;">📥 Export CSV</button>
+                </div>
+                <div id="allBookingsList"></div>
+            </div>
 
-          {/* Mobile Menu */}
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="md:hidden mt-4 space-y-4"
-              >
-                <a href="#services" className="block py-2 text-gray-600">Services</a>
-                <a href="#packages" className="block py-2 text-gray-600">Packages</a>
-                <a href="#portfolio" className="block py-2 text-gray-600">Portfolio</a>
-                <a href="#testimonials" className="block py-2 text-gray-600">Reviews</a>
-                <Button onClick={() => setShowBookingModal(true)} className="w-full bg-blue-600">
-                  Book Now
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </nav>
+            <!-- New Booking -->
+            <div id="new-booking" class="section">
+                <h2 style="margin-bottom: 20px;">Create New Booking</h2>
+                <div class="form-section">
+                    <h3 class="form-title">Client & Event Details</h3>
+                    <form id="bookingForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Client Name *</label>
+                                <input type="text" id="clientName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" id="clientEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <input type="text" id="clientPhone" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Event Type *</label>
+                                <select id="eventType" required>
+                                    <option value="">Select type</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="portrait">Portrait Session</option>
+                                    <option value="commercial">Commercial</option>
+                                    <option value="event">Event Coverage</option>
+                                    <option value="video">Video Production</option>
+                                    <option value="realestate">Real Estate</option>
+                                    <option value="product">Product Photography</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Package *</label>
+                                <select id="packageSelect" required onchange="updatePrice()">
+                                    <option value="">Select package</option>
+                                    <option value="basic">Basic - $500</option>
+                                    <option value="standard">Standard - $1,200</option>
+                                    <option value="premium">Premium - $2,500</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Price ($)</label>
+                                <input type="number" id="bookingPrice" required min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Event Date & Time *</label>
+                                <input type="datetime-local" id="eventDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Duration (hours)</label>
+                                <input type="number" id="duration" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="location">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Special Requirements</label>
+                            <textarea id="requirements" rows="3" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="margin-top: 20px;">Create Booking</button>
+                    </form>
+                </div>
+            </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Hero Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Capture Your
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Moments</span>
-          </h1>
-          <p className="text-gray-600 text-xl max-w-2xl mx-auto mb-8">
-            Professional Photography & Videography for weddings, events, brands and memories. 
-            Turning your special moments into timeless art.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Button onClick={() => setShowBookingModal(true)} className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6">
-              Book a Session
-              <ArrowRight className="ml-2" />
-            </Button>
-            <Button variant="outline" className="text-lg px-8 py-6">
-              View Portfolio
-            </Button>
-          </div>
-        </motion.div>
-
-        {/* Services Section */}
-        <div id="services" className="mb-20">
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-4xl font-bold text-center mb-12"
-          >
-            Our Services
-          </motion.h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: Camera, title: "Photography", desc: "Studio, outdoor, events and commercial shoots with professional equipment." },
-              { icon: Video, title: "Videography", desc: "Cinematic videos, reels, ads and documentaries with 4K quality." },
-              { icon: Calendar, title: "Easy Booking", desc: "Simple online booking system for your next event. Available 24/7." },
-            ].map((service, index) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-                  <CardContent className="p-8 text-center">
-                    <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <service.icon className="w-8 h-8 text-blue-600" />
+            <!-- Clients -->
+            <div id="clients" class="section">
+                <h2 style="margin-bottom: 20px;">Client Management</h2>
+                <div class="form-section">
+                    <h3 class="form-title">Add New Client</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Name *</label>
+                            <input type="text" id="newClientName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" id="newClientEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" id="newClientPhone">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn" onclick="addClient()">Add Client</button>
+                        </div>
                     </div>
-                    <h3 className="font-semibold text-2xl mb-4">{service.title}</h3>
-                    <p className="text-gray-600">{service.desc}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+                </div>
+                <div id="clientList"></div>
+            </div>
 
-        {/* Packages Section */}
-        <div id="packages" className="mb-20">
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-4xl font-bold text-center mb-12"
-          >
-            Our Packages
-          </motion.h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {packages.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <Card
-                  className={`rounded-2xl cursor-pointer transition-all relative ${
-                    selectedPackage === item.title 
-                      ? "ring-2 ring-blue-600 shadow-2xl scale-105" 
-                      : "shadow-lg hover:shadow-xl hover:-translate-y-1"
-                  }`}
-                  onClick={() => setSelectedPackage(item.title)}
-                >
-                  {selectedPackage === item.title && (
-                    <div className="absolute top-4 right-4 bg-blue-600 text-white rounded-full p-1">
-                      <Check size={16} />
+            <!-- Packages -->
+            <div id="packages" class="section">
+                <h2 style="margin-bottom: 20px;">Service Packages</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div class="package-card">
+                        <h3>📸 Basic Package</h3>
+                        <div class="package-price">$500</div>
+                        <ul>
+                            <li>✓ 2 Hours Coverage</li>
+                            <li>✓ 50 Edited Photos</li>
+                            <li>✓ Online Gallery</li>
+                            <li>✓ Basic Retouching</li>
+                        </ul>
                     </div>
-                  )}
-                  <CardContent className="p-8">
-                    <h3 className="text-2xl font-semibold mb-3">{item.title}</h3>
-                    <p className="text-4xl font-bold text-blue-600 mb-4">{item.price}</p>
-                    <p className="text-gray-600 mb-6">{item.desc}</p>
-                    <ul className="space-y-3">
-                      {item.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-gray-700">
-                          <Check size={16} className="text-green-500" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <Button 
-                      className="w-full mt-6 bg-blue-600 hover:bg-blue-700"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleBooking();
-                      }}
-                    >
-                      Select Package
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Portfolio Section */}
-        <div id="portfolio" className="mb-20">
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-4xl font-bold text-center mb-12"
-          >
-            Our Portfolio
-          </motion.h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {portfolioImages.map((image, index) => (
-              <motion.div
-                key={image.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="relative group cursor-pointer"
-              >
-                <div className="aspect-square bg-gradient-to-br from-gray-300 to-gray-400 rounded-lg flex items-center justify-center">
-                  <Camera className="w-12 h-12 text-white opacity-50 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all rounded-lg flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-center">
-                    <p className="font-semibold">{image.title}</p>
-                    <p className="text-sm">{image.category}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Testimonials Section */}
-        <div id="testimonials" className="mb-20">
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-4xl font-bold text-center mb-12"
-          >
-            Client Reviews
-          </motion.h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <Card className="rounded-2xl shadow-lg">
-                  <CardContent className="p-8">
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={20}
-                          className={i < testimonial.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}
-                        />
-                      ))}
+                    <div class="package-card">
+                        <h3>🎥 Standard Package</h3>
+                        <div class="package-price">$1,200</div>
+                        <ul>
+                            <li>✓ 5 Hours Coverage</li>
+                            <li>✓ 150 Edited Photos</li>
+                            <li>✓ Highlight Video</li>
+                            <li>✓ Premium Retouching</li>
+                        </ul>
                     </div>
-                    <p className="text-gray-700 mb-4">"{testimonial.text}"</p>
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+                    <div class="package-card">
+                        <h3>👑 Premium Package</h3>
+                        <div class="package-price">$2,500</div>
+                        <ul>
+                            <li>✓ Full Day Coverage</li>
+                            <li>✓ 400+ Edited Photos</li>
+                            <li>✓ Full Video Production</li>
+                            <li>✓ Drone Footage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        {/* Contact Section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-        >
-          <Card className="rounded-2xl shadow-xl bg-gradient-to-br from-blue-50 to-purple-50">
-            <CardContent className="p-12">
-              <h2 className="text-4xl font-bold mb-6">Quick Contact</h2>
-              <p className="text-gray-600 mb-4 text-lg">
-                Selected Package: <span className="font-semibold text-blue-600">{selectedPackage}</span>
-              </p>
-
-              <div className="space-y-6 text-lg">
-                <div className="flex items-center gap-4 hover:text-blue-600 transition-colors cursor-pointer">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Phone size={24} className="text-blue-600" />
-                  </div>
-                  <span>+254 700 000 000</span>
-                </div>
-
-                <div className="flex items-center gap-4 hover:text-purple-600 transition-colors cursor-pointer">
-                  <div className="bg-purple-100 p-3 rounded-full">
-                    <Mail size={24} className="text-purple-600" />
-                  </div>
-                  <span>hello@lenscraftstudio.com</span>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="bg-green-100 p-3 rounded-full">
-                    <MapPin size={24} className="text-green-600" />
-                  </div>
-                  <span>Nairobi, Kenya</span>
-                </div>
-              </div>
-
-              <div className="flex gap-4 mt-8">
-                <Button 
-                  onClick={handleBooking}
-                  className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-xl"
-                >
-                  Book via WhatsApp
-                </Button>
-                <Button 
-                  variant="outline"
-                  className="text-lg px-8 py-6 rounded-xl"
-                >
-                  Email Us
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-
-      {/* Booking Modal */}
-      <AnimatePresence>
-        {showBookingModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-            onClick={() => setShowBookingModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl p-8 max-w-md w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2 className="text-3xl font-bold mb-6">Book Your Session</h2>
-              <div className="space-y-4 mb-6">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Package</label>
-                  <select className="w-full border rounded-lg p-3">
-                    {packages.map((pkg) => (
-                      <option key={pkg.title} value={pkg.title}>{pkg.title} - {pkg.price}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Date</label>
-                  <input type="date" className="w-full border rounded-lg p-3" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Message</label>
-                  <textarea className="w-full border rounded-lg p-3" rows={3} placeholder="Tell us about your event..."></textarea>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <Button className="flex-1 bg-blue-600 hover:bg-blue-700" onClick={handleBooking}>
-                  Book Now
-                </Button>
-                <Button variant="outline" className="flex-1" onClick={() => setShowBookingModal(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-gray-400">© 2024 LensCraft Studio. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
-  );
-}
+
+    <script>
+        // Initialize data from localStorage or with defaults
+        let bookings = [];
+        let clients = [];
+
+        // Load data from localStorage
+        function loadData() {
+            try {
+                const savedBookings = localStorage.getItem('photoBookings');
+                const savedClients = localStorage.getItem('photoClients');
+                
+                if (savedBookings) {
+                    bookings = JSON.parse(savedBookings);
+                } else {
+                    // Add sample data
+                    bookings = [
+                        {
+                            id: 1,
+                            clientName: "Sarah Johnson",
+                            email: "sarah@email.com",
+                            phone: "555-0101",
+                            eventType: "wedding",
+                            package: "premium",
+                            price: 2500,
+                            eventDate: "2024-12-15T14:00",
+                            duration: 8,
+                            location: "Grand Plaza Hotel",
+                            requirements: "Outdoor ceremony, indoor reception",
+                            status: "confirmed",
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: 2,
+                            clientName: "Mike Peters",
+                            email: "mike@email.com",
+                            phone: "555-0102",
+                            eventType: "portrait",
+                            package: "basic",
+                            price: 500,
+                            eventDate: "2024-12-20T10:00",
+                            duration: 2,
+                            location: "Central Park",
+                            requirements: "Family portrait session",
+                            status: "pending",
+                            createdAt: new Date().toISOString()
+                        }
+                    ];
+                }
+                
+                if (savedClients) {
+                    clients = JSON.parse(savedClients);
+                } else {
+                    clients = [
+                        { id: 1, name: "Sarah Johnson", email: "sarah@email.com", phone: "555-0101" },
+                        { id: 2, name: "Mike Peters", email: "mike@email.com", phone: "555-0102" }
+                    ];
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+                bookings = [];
+                clients = [];
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            try {
+                localStorage.setItem('photoBookings', JSON.stringify(bookings));
+                localStorage.setItem('photoClients', JSON.stringify(clients));
+            } catch (e) {
+                console.error('Error saving data:', e);
+            }
+        }
+
+        // Show different sections
+        function showSection(sectionId, btn) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => {
+                s.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            
+            // Show selected section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('active');
+            }
+            
+            // Highlight clicked button
+            if (btn) {
+                btn.classList.add('active');
+            }
+            
+            // Update content based on section
+            if (sectionId === 'dashboard') updateDashboard();
+            if (sectionId === 'bookings') displayAllBookings();
+            if (sectionId === 'clients') displayClients();
+        }
+
+        // Update Dashboard
+        function updateDashboard() {
+            // Stats
+            const statsGrid = document.getElementById('statsGrid');
+            if (!statsGrid) return;
+            
+            const totalRevenue = bookings.reduce((sum, b) => sum + (parseFloat(b.price) || 0), 0);
+            const completedJobs = bookings.filter(b => b.status === 'completed').length;
+            
+            statsGrid.innerHTML = `
+                <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <h3>Total Bookings</h3>
+                    <div class="number">${bookings.length}</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <h3>Total Revenue</h3>
+                    <div class="number">$${totalRevenue.toLocaleString()}</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    <h3>Total Clients</h3>
+                    <div class="number">${clients.length}</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                    <h3>Completed Jobs</h3>
+                    <div class="number">${completedJobs}</div>
+                </div>
+            `;
+            
+            // Recent bookings
+            const recentBookingsDiv = document.getElementById('recentBookings');
+            if (!recentBookingsDiv) return;
+            
+            const recent = bookings
+                .sort((a, b) => b.id - a.id)
+                .slice(0, 5);
+            
+            if (recent.length === 0) {
+                recentBookingsDiv.innerHTML = '<p style="color: #666;">No bookings yet. Create your first booking!</p>';
+                return;
+            }
+            
+            recentBookingsDiv.innerHTML = recent.map(booking => `
+                <div class="booking-card">
+                    <div class="booking-info">
+                        <h3>${booking.clientName} - ${booking.eventType}</h3>
+                        <div class="booking-detail">📅 ${new Date(booking.eventDate).toLocaleString()}</div>
+                        <div class="booking-detail">📍 ${booking.location || 'No location'}</div>
+                        <div class="booking-detail">💰 $${booking.price}</div>
+                        <span class="booking-status status-${booking.status}">${booking.status}</span>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="action-btn btn-success" onclick="changeStatus(${booking.id}, 'confirmed')">Confirm</button>
+                        <button class="action-btn" style="background: #17a2b8;" onclick="changeStatus(${booking.id}, 'completed')">Complete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Display all bookings
+        function displayAllBookings(filter = 'all') {
+            const container = document.getElementById('allBookingsList');
+            if (!container) return;
+            
+            let filteredBookings = filter === 'all' 
+                ? bookings 
+                : bookings.filter(b => b.status === filter);
+            
+            filteredBookings.sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
+            
+            if (filteredBookings.length === 0) {
+                container.innerHTML = '<p style="color: #666;">No bookings found.</p>';
+                return;
+            }
+            
+            container.innerHTML = filteredBookings.map(booking => `
+                <div class="booking-card">
+                    <div class="booking-info">
+                        <h3>${booking.clientName} - ${booking.eventType.toUpperCase()}</h3>
+                        <div class="booking-detail">📧 ${booking.email}</div>
+                        <div class="booking-detail">📱 ${booking.phone}</div>
+                        <div class="booking-detail">📅 ${new Date(booking.eventDate).toLocaleString()}</div>
+                        <div class="booking-detail">⏱️ ${booking.duration || 0} hours</div>
+                        <div class="booking-detail">📍 ${booking.location || 'N/A'}</div>
+                        <div class="booking-detail">💼 ${booking.package}</div>
+                        <div class="booking-detail">💰 $${booking.price}</div>
+                        ${booking.requirements ? `<div class="booking-detail">📝 ${booking.requirements}</div>` : ''}
+                        <span class="booking-status status-${booking.status}">${booking.status}</span>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="action-btn btn-success" onclick="changeStatus(${booking.id}, 'confirmed')">Confirm</button>
+                        <button class="action-btn" style="background: #17a2b8;" onclick="changeStatus(${booking.id}, 'completed')">Complete</button>
+                        <button class="action-btn btn-danger" onclick="deleteBooking(${booking.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter bookings
+        function filterBookings() {
+            const filter = document.getElementById('bookingFilter').value;
+            displayAllBookings(filter);
+        }
+
+        // Create new booking
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newBooking = {
+                id: Date.now(),
+                clientName: document.getElementById('clientName').value,
+                email: document.getElementById('clientEmail').value,
+                phone: document.getElementById('clientPhone').value,
+                eventType: document.getElementById('eventType').value,
+                package: document.getElementById('packageSelect').value,
+                price: parseFloat(document.getElementById('bookingPrice').value) || 0,
+                eventDate: document.getElementById('eventDate').value,
+                duration: parseInt(document.getElementById('duration').value) || 0,
+                location: document.getElementById('location').value,
+                requirements: document.getElementById('requirements').value,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+            
+            bookings.push(newBooking);
+            
+            // Add client if not exists
+            const clientExists = clients.find(c => c.email === newBooking.email);
+            if (!clientExists) {
+                clients.push({
+                    id: Date.now(),
+                    name: newBooking.clientName,
+                    email: newBooking.email,
+                    phone: newBooking.phone
+                });
+            }
+            
+            saveData();
+            alert('✅ Booking created successfully!');
+            this.reset();
+            updateDashboard();
+            showSection('dashboard', document.querySelector('.nav-btn'));
+        });
+
+        // Update price based on package
+        function updatePrice() {
+            const prices = {
+                'basic': 500,
+                'standard': 1200,
+                'premium': 2500
+            };
+            const selected = document.getElementById('packageSelect').value;
+            if (prices[selected]) {
+                document.getElementById('bookingPrice').value = prices[selected];
+            }
+        }
+
+        // Change booking status
+        function changeStatus(id, newStatus) {
+            const booking = bookings.find(b => b.id === id);
+            if (booking) {
+                booking.status = newStatus;
+                saveData();
+                updateDashboard();
+                if (document.getElementById('bookings').classList.contains('active')) {
+                    displayAllBookings();
+                }
+            }
+        }
+
+        // Delete booking
+        function deleteBooking(id) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                bookings = bookings.filter(b => b.id !== id);
+                saveData();
+                updateDashboard();
+                displayAllBookings();
+            }
+        }
+
+        // Add client
+        function addClient() {
+            const name = document.getElementById('newClientName').value;
+            const email = document.getElementById('newClientEmail').value;
+            const phone = document.getElementById('newClientPhone').value;
+            
+            if (!name || !email) {
+                alert('Please fill in name and email');
+                return;
+            }
+            
+            clients.push({
+                id: Date.now(),
+                name: name,
+                email: email,
+                phone: phone
+            });
+            
+            saveData();
+            displayClients();
+            alert('Client added successfully!');
+            
+            // Clear form
+            document.getElementById('newClientName').value = '';
+            document.getElementById('newClientEmail').value = '';
+            document.getElementById('newClientPhone').value = '';
+        }
+
+        // Display clients
+        function displayClients() {
+            const container = document.getElementById('clientList');
+            if (!container) return;
+            
+            if (clients.length === 0) {
+                container.innerHTML = '<p style="color: #666;">No clients added yet.</p>';
+                return;
+            }
+            
+            container.innerHTML = clients.map(client => {
+                const clientBookings = bookings.filter(b => b.email === client.email);
+                return `
+                    <div class="client-card">
+                        <div>
+                            <h3>${client.name}</h3>
+                            <div>📧 ${client.email}</div>
+                            <div>📱 ${client.phone || 'N/A'}</div>
+                            <div>📅 Bookings: ${clientBookings.length}</div>
+                        </div>
+                        <button class="action-btn btn-danger" onclick="deleteClient(${client.id})">Remove</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Delete client
+        function deleteClient(id) {
+            if (confirm('Remove this client?')) {
+                clients = clients.filter(c => c.id !== id);
+                saveData();
+                displayClients();
+            }
+        }
+
+        // Export bookings to CSV
+        function exportBookings() {
+            let csv = 'Client Name,Email,Phone,Event Type,Package,Price,Date,Status,Location,Requirements\n';
+            bookings.forEach(b => {
+                csv += `"${b.clientName}","${b.email}","${b.phone}","${b.eventType}","${b.package}",${b.price},"${b.eventDate}","${b.status}","${b.location || ''}","${b.requirements || ''}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bookings_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+
+        // Initialize app
+        loadData();
+        updateDashboard();
+        
+        console.log('PhotoShot Pro is ready!');
+        console.log('Bookings loaded:', bookings.length);
+        console.log('Clients loaded:', clients.length);
+    </script>
+</body>
+                      </html>
