@@ -1,0 +1,414 @@
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Camera, Video, Calendar, Phone, Mail, MapPin, Check, Menu, X, Star, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+export default function PhotoShotBusinessApp() {
+  const [selectedPackage, setSelectedPackage] = useState("Wedding Shoot");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+
+  const packages = [
+    { 
+      title: "Wedding Shoot", 
+      price: "KSh 25,000", 
+      desc: "Full wedding photography + cinematic video coverage.",
+      features: ["8 hours coverage", "500+ edited photos", "10-min highlight video", "Online gallery"]
+    },
+    { 
+      title: "Birthday Shoot", 
+      price: "KSh 8,000", 
+      desc: "Professional birthday photography and highlight videos.",
+      features: ["3 hours coverage", "150+ edited photos", "2-min highlight video", "Instant prints"]
+    },
+    { 
+      title: "Business Promo", 
+      price: "KSh 15,000", 
+      desc: "Product videos, branding photos, and promo content.",
+      features: ["4 hours coverage", "300+ edited photos", "60-sec promo video", "Commercial license"]
+    },
+  ];
+
+  const portfolioImages = [
+    { id: 1, title: "Wedding", category: "Wedding" },
+    { id: 2, title: "Birthday", category: "Events" },
+    { id: 3, title: "Product", category: "Commercial" },
+    { id: 4, title: "Corporate", category: "Commercial" },
+    { id: 5, title: "Engagement", category: "Wedding" },
+    { id: 6, title: "Baby Shower", category: "Events" },
+  ];
+
+  const testimonials = [
+    { name: "Sarah M.", text: "Amazing wedding photos! Made our day perfect.", rating: 5 },
+    { name: "James K.", text: "Professional and creative. Highly recommend for business shoots.", rating: 5 },
+    { name: "Linda W.", text: "Birthday memories captured beautifully. Thank you!", rating: 4 },
+  ];
+
+  const handleBooking = () => {
+    const message = `Hi LensCraft Studio! I'd like to book the ${selectedPackage} package.`;
+    window.open(`https://wa.me/254700000000?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Navigation */}
+      <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2"
+            >
+              <Camera className="w-8 h-8 text-blue-600" />
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                LensCraft Studio
+              </span>
+            </motion.div>
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center gap-8">
+              <a href="#services" className="text-gray-600 hover:text-blue-600 transition-colors">Services</a>
+              <a href="#packages" className="text-gray-600 hover:text-blue-600 transition-colors">Packages</a>
+              <a href="#portfolio" className="text-gray-600 hover:text-blue-600 transition-colors">Portfolio</a>
+              <a href="#testimonials" className="text-gray-600 hover:text-blue-600 transition-colors">Reviews</a>
+              <Button onClick={() => setShowBookingModal(true)} className="bg-blue-600 hover:bg-blue-700">
+                Book Now
+              </Button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <Button 
+              variant="ghost" 
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X /> : <Menu />}
+            </Button>
+          </div>
+
+          {/* Mobile Menu */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="md:hidden mt-4 space-y-4"
+              >
+                <a href="#services" className="block py-2 text-gray-600">Services</a>
+                <a href="#packages" className="block py-2 text-gray-600">Packages</a>
+                <a href="#portfolio" className="block py-2 text-gray-600">Portfolio</a>
+                <a href="#testimonials" className="block py-2 text-gray-600">Reviews</a>
+                <Button onClick={() => setShowBookingModal(true)} className="w-full bg-blue-600">
+                  Book Now
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </nav>
+
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        {/* Hero Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            Capture Your
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Moments</span>
+          </h1>
+          <p className="text-gray-600 text-xl max-w-2xl mx-auto mb-8">
+            Professional Photography & Videography for weddings, events, brands and memories. 
+            Turning your special moments into timeless art.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Button onClick={() => setShowBookingModal(true)} className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6">
+              Book a Session
+              <ArrowRight className="ml-2" />
+            </Button>
+            <Button variant="outline" className="text-lg px-8 py-6">
+              View Portfolio
+            </Button>
+          </div>
+        </motion.div>
+
+        {/* Services Section */}
+        <div id="services" className="mb-20">
+          <motion.h2 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-4xl font-bold text-center mb-12"
+          >
+            Our Services
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { icon: Camera, title: "Photography", desc: "Studio, outdoor, events and commercial shoots with professional equipment." },
+              { icon: Video, title: "Videography", desc: "Cinematic videos, reels, ads and documentaries with 4K quality." },
+              { icon: Calendar, title: "Easy Booking", desc: "Simple online booking system for your next event. Available 24/7." },
+            ].map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+              >
+                <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                  <CardContent className="p-8 text-center">
+                    <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <service.icon className="w-8 h-8 text-blue-600" />
+                    </div>
+                    <h3 className="font-semibold text-2xl mb-4">{service.title}</h3>
+                    <p className="text-gray-600">{service.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Packages Section */}
+        <div id="packages" className="mb-20">
+          <motion.h2 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-4xl font-bold text-center mb-12"
+          >
+            Our Packages
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {packages.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+              >
+                <Card
+                  className={`rounded-2xl cursor-pointer transition-all relative ${
+                    selectedPackage === item.title 
+                      ? "ring-2 ring-blue-600 shadow-2xl scale-105" 
+                      : "shadow-lg hover:shadow-xl hover:-translate-y-1"
+                  }`}
+                  onClick={() => setSelectedPackage(item.title)}
+                >
+                  {selectedPackage === item.title && (
+                    <div className="absolute top-4 right-4 bg-blue-600 text-white rounded-full p-1">
+                      <Check size={16} />
+                    </div>
+                  )}
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-semibold mb-3">{item.title}</h3>
+                    <p className="text-4xl font-bold text-blue-600 mb-4">{item.price}</p>
+                    <p className="text-gray-600 mb-6">{item.desc}</p>
+                    <ul className="space-y-3">
+                      {item.features.map((feature, i) => (
+                        <li key={i} className="flex items-center gap-2 text-gray-700">
+                          <Check size={16} className="text-green-500" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Button 
+                      className="w-full mt-6 bg-blue-600 hover:bg-blue-700"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBooking();
+                      }}
+                    >
+                      Select Package
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Portfolio Section */}
+        <div id="portfolio" className="mb-20">
+          <motion.h2 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-4xl font-bold text-center mb-12"
+          >
+            Our Portfolio
+          </motion.h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {portfolioImages.map((image, index) => (
+              <motion.div
+                key={image.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                className="relative group cursor-pointer"
+              >
+                <div className="aspect-square bg-gradient-to-br from-gray-300 to-gray-400 rounded-lg flex items-center justify-center">
+                  <Camera className="w-12 h-12 text-white opacity-50 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all rounded-lg flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-center">
+                    <p className="font-semibold">{image.title}</p>
+                    <p className="text-sm">{image.category}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Testimonials Section */}
+        <div id="testimonials" className="mb-20">
+          <motion.h2 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-4xl font-bold text-center mb-12"
+          >
+            Client Reviews
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={testimonial.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+              >
+                <Card className="rounded-2xl shadow-lg">
+                  <CardContent className="p-8">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={20}
+                          className={i < testimonial.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-gray-700 mb-4">"{testimonial.text}"</p>
+                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Contact Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+        >
+          <Card className="rounded-2xl shadow-xl bg-gradient-to-br from-blue-50 to-purple-50">
+            <CardContent className="p-12">
+              <h2 className="text-4xl font-bold mb-6">Quick Contact</h2>
+              <p className="text-gray-600 mb-4 text-lg">
+                Selected Package: <span className="font-semibold text-blue-600">{selectedPackage}</span>
+              </p>
+
+              <div className="space-y-6 text-lg">
+                <div className="flex items-center gap-4 hover:text-blue-600 transition-colors cursor-pointer">
+                  <div className="bg-blue-100 p-3 rounded-full">
+                    <Phone size={24} className="text-blue-600" />
+                  </div>
+                  <span>+254 700 000 000</span>
+                </div>
+
+                <div className="flex items-center gap-4 hover:text-purple-600 transition-colors cursor-pointer">
+                  <div className="bg-purple-100 p-3 rounded-full">
+                    <Mail size={24} className="text-purple-600" />
+                  </div>
+                  <span>hello@lenscraftstudio.com</span>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="bg-green-100 p-3 rounded-full">
+                    <MapPin size={24} className="text-green-600" />
+                  </div>
+                  <span>Nairobi, Kenya</span>
+                </div>
+              </div>
+
+              <div className="flex gap-4 mt-8">
+                <Button 
+                  onClick={handleBooking}
+                  className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-xl"
+                >
+                  Book via WhatsApp
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="text-lg px-8 py-6 rounded-xl"
+                >
+                  Email Us
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* Booking Modal */}
+      <AnimatePresence>
+        {showBookingModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => setShowBookingModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-2xl p-8 max-w-md w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-3xl font-bold mb-6">Book Your Session</h2>
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Package</label>
+                  <select className="w-full border rounded-lg p-3">
+                    {packages.map((pkg) => (
+                      <option key={pkg.title} value={pkg.title}>{pkg.title} - {pkg.price}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Date</label>
+                  <input type="date" className="w-full border rounded-lg p-3" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Message</label>
+                  <textarea className="w-full border rounded-lg p-3" rows={3} placeholder="Tell us about your event..."></textarea>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <Button className="flex-1 bg-blue-600 hover:bg-blue-700" onClick={handleBooking}>
+                  Book Now
+                </Button>
+                <Button variant="outline" className="flex-1" onClick={() => setShowBookingModal(false)}>
+                  Cancel
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-8">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="text-gray-400">© 2024 LensCraft Studio. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
