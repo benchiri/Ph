@@ -11,35 +11,62 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --gold: #D4A574;
+            --gold-light: #E8C9A0;
+            --gold-dark: #B8860B;
+            --black: #1A1A1A;
+            --black-light: #2C2C2C;
+            --black-medium: #3D3D3D;
+            --brown: #8B4513;
+            --brown-light: #A0522D;
+            --brown-dark: #6B3410;
+            --white: #FFFFFF;
+            --cream: #FFF8F0;
+            --gray-light: #F5F5F5;
+            
+            --primary: var(--black);
+            --secondary: var(--brown);
+            --accent: var(--gold);
+            --accent-hover: var(--gold-dark);
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f0f2f5;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #1A1A1A 0%, #2C1810 50%, #1A1A1A 100%);
             min-height: 100vh;
+            padding: 20px;
         }
 
         .app-container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
+            background: var(--cream);
             min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border-radius: 15px;
+            overflow: hidden;
         }
 
         .header {
-            background: #1a1a2e;
-            color: white;
-            padding: 20px;
+            background: linear-gradient(135deg, #1A1A1A 0%, #2C1810 100%);
+            color: var(--gold);
+            padding: 25px;
             text-align: center;
+            border-bottom: 3px solid var(--gold);
         }
 
         .header h1 {
-            color: #e94560;
+            color: var(--gold);
             margin-bottom: 15px;
-            font-size: 32px;
+            font-size: 36px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .header h1 span {
-            color: white;
+            color: var(--white);
         }
 
         .nav-menu {
@@ -50,23 +77,38 @@
         }
 
         .nav-btn {
-            background: #16213e;
-            color: white;
-            border: 2px solid transparent;
+            background: var(--black-light);
+            color: var(--gold-light);
+            border: 2px solid var(--gold-dark);
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-            transition: 0.3s;
+            transition: all 0.3s;
+            font-family: 'Georgia', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .nav-btn:hover, .nav-btn.active {
-            background: #e94560;
-            border-color: #e94560;
+        .nav-btn:hover {
+            background: var(--gold-dark);
+            color: var(--black);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .nav-btn.active {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(212, 165, 116, 0.5);
         }
 
         .main-content {
-            padding: 20px;
+            padding: 30px;
+            background: var(--cream);
         }
 
         .section {
@@ -75,6 +117,19 @@
 
         .section.active {
             display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--black);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--gold);
         }
 
         .stats-grid {
@@ -85,37 +140,52 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 20px;
+            background: linear-gradient(135deg, #1A1A1A, #2C1810);
+            padding: 25px;
             border-radius: 10px;
-            color: white;
+            color: var(--gold);
             text-align: center;
+            border: 2px solid var(--gold-dark);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
         }
 
         .stat-card h3 {
             font-size: 14px;
             margin-bottom: 10px;
-            opacity: 0.9;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .stat-card .number {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(212, 165, 116, 0.5);
         }
 
         .form-section {
-            background: #f8f9fa;
-            padding: 20px;
+            background: var(--white);
+            padding: 25px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--gold-light);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .form-title {
             font-size: 20px;
             margin-bottom: 20px;
-            color: #1a1a2e;
-            border-bottom: 3px solid #e94560;
+            color: var(--brown);
+            border-bottom: 3px solid var(--gold);
             padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .form-grid {
@@ -132,77 +202,103 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #333;
+            color: var(--brown-dark);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
+            padding: 12px;
+            border: 2px solid var(--gold-light);
             border-radius: 5px;
             font-size: 14px;
-            font-family: Arial, sans-serif;
+            font-family: 'Georgia', serif;
+            background: var(--cream);
+            transition: all 0.3s;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: #e94560;
+            border-color: var(--gold-dark);
             outline: none;
+            background: white;
+            box-shadow: 0 0 10px rgba(212, 165, 116, 0.2);
         }
 
         .btn {
-            background: #e94560;
-            color: white;
-            border: none;
-            padding: 10px 25px;
+            background: linear-gradient(135deg, var(--brown), var(--brown-dark));
+            color: var(--gold);
+            border: 2px solid var(--gold-dark);
+            padding: 12px 30px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            transition: 0.3s;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Georgia', serif;
         }
 
         .btn:hover {
-            background: #c73e54;
+            background: var(--gold-dark);
+            color: var(--black);
+            border-color: var(--gold);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 165, 116, 0.4);
         }
 
         .btn-secondary {
-            background: #16213e;
+            background: var(--black-light);
+            color: var(--gold-light);
+            border-color: var(--gold-dark);
+        }
+
+        .btn-secondary:hover {
+            background: var(--black-medium);
+            color: var(--gold);
         }
 
         .btn-success {
-            background: #28a745;
+            background: linear-gradient(135deg, #2D5016, #1A3009);
+            border-color: var(--gold-dark);
         }
 
         .btn-danger {
-            background: #dc3545;
+            background: linear-gradient(135deg, #8B0000, #4A0000);
+            border-color: var(--gold-dark);
         }
 
         .booking-card {
-            background: white;
-            border: 2px solid #e0e0e0;
+            background: var(--white);
+            border: 2px solid var(--gold-light);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
+            transition: all 0.3s;
+            border-left: 5px solid var(--gold);
         }
 
         .booking-card:hover {
-            border-color: #e94560;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.2);
+            transform: translateY(-2px);
         }
 
         .booking-info h3 {
-            color: #1a1a2e;
+            color: var(--brown);
             margin-bottom: 10px;
+            font-size: 18px;
         }
 
         .booking-detail {
             margin: 5px 0;
-            color: #666;
+            color: var(--black-medium);
         }
 
         .booking-status {
@@ -213,21 +309,25 @@
             font-weight: bold;
             text-transform: uppercase;
             margin-top: 10px;
+            letter-spacing: 1px;
         }
 
         .status-pending {
-            background: #fff3cd;
+            background: linear-gradient(135deg, #FFF3CD, #FFE69C);
             color: #856404;
+            border: 1px solid #FFD700;
         }
 
         .status-confirmed {
-            background: #d4edda;
+            background: linear-gradient(135deg, #D4EDDA, #A8E6B2);
             color: #155724;
+            border: 1px solid #28A745;
         }
 
         .status-completed {
-            background: #d1ecf1;
-            color: #0c5460;
+            background: linear-gradient(135deg, #D1ECF1, #8ECAD5);
+            color: #0C5460;
+            border: 1px solid #17A2B8;
         }
 
         .booking-actions {
@@ -238,58 +338,137 @@
         }
 
         .action-btn {
-            padding: 5px 15px;
+            padding: 8px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 12px;
             font-weight: bold;
             color: white;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Georgia', serif;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .client-card {
-            background: white;
-            border: 2px solid #e0e0e0;
+            background: var(--white);
+            border: 2px solid var(--gold-light);
+            border-left: 5px solid var(--brown);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s;
+        }
+
+        .client-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
         }
 
         .package-card {
-            background: white;
-            border: 2px solid #e0e0e0;
+            background: linear-gradient(135deg, var(--white), var(--cream));
+            border: 2px solid var(--gold-light);
             border-radius: 10px;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
+            transition: all 0.3s;
+        }
+
+        .package-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.3);
+            background: linear-gradient(135deg, var(--cream), var(--white));
         }
 
         .package-price {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
-            color: #e94560;
+            color: var(--brown);
             margin: 15px 0;
+            text-shadow: 1px 1px 2px rgba(212, 165, 116, 0.3);
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 15px;
+        }
+
+        .package-card h3 {
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .package-card ul {
             list-style: none;
             text-align: left;
+            color: var(--brown-dark);
         }
 
         .package-card li {
-            margin: 5px 0;
+            margin: 8px 0;
+            padding-left: 5px;
+        }
+
+        select {
+            background: var(--cream);
+            border: 2px solid var(--gold-light);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+        }
+
+        select:focus {
+            border-color: var(--gold-dark);
+            outline: none;
         }
 
         @media (max-width: 768px) {
             .nav-menu {
                 flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                text-align: center;
             }
             
             .booking-card {
                 padding: 15px;
             }
+            
+            .client-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--brown);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-dark);
         }
     </style>
 </head>
@@ -309,7 +488,7 @@
         <div class="main-content">
             <!-- Dashboard -->
             <div id="dashboard" class="section active">
-                <h2 style="margin-bottom: 20px;">Dashboard Overview</h2>
+                <h2>📊 Dashboard Overview</h2>
                 <div class="stats-grid" id="statsGrid"></div>
                 
                 <div class="form-section">
@@ -320,9 +499,9 @@
 
             <!-- All Bookings -->
             <div id="bookings" class="section">
-                <h2 style="margin-bottom: 20px;">All Bookings</h2>
+                <h2>📅 All Bookings</h2>
                 <div style="margin-bottom: 20px;">
-                    <select id="bookingFilter" onchange="filterBookings()" style="padding: 10px; border: 2px solid #ddd; border-radius: 5px;">
+                    <select id="bookingFilter" onchange="filterBookings()" style="padding: 10px; border: 2px solid var(--gold-light); border-radius: 5px; background: var(--cream);">
                         <option value="all">All Bookings</option>
                         <option value="pending">Pending</option>
                         <option value="confirmed">Confirmed</option>
@@ -335,7 +514,7 @@
 
             <!-- New Booking -->
             <div id="new-booking" class="section">
-                <h2 style="margin-bottom: 20px;">Create New Booking</h2>
+                <h2>➕ Create New Booking</h2>
                 <div class="form-section">
                     <h3 class="form-title">Client & Event Details</h3>
                     <form id="bookingForm">
@@ -356,22 +535,22 @@
                                 <label>Event Type *</label>
                                 <select id="eventType" required>
                                     <option value="">Select type</option>
-                                    <option value="wedding">Wedding</option>
-                                    <option value="portrait">Portrait Session</option>
-                                    <option value="commercial">Commercial</option>
-                                    <option value="event">Event Coverage</option>
-                                    <option value="video">Video Production</option>
-                                    <option value="realestate">Real Estate</option>
-                                    <option value="product">Product Photography</option>
+                                    <option value="wedding">💒 Wedding</option>
+                                    <option value="portrait">📸 Portrait Session</option>
+                                    <option value="commercial">🏢 Commercial</option>
+                                    <option value="event">🎉 Event Coverage</option>
+                                    <option value="video">🎥 Video Production</option>
+                                    <option value="realestate">🏠 Real Estate</option>
+                                    <option value="product">📦 Product Photography</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Package *</label>
                                 <select id="packageSelect" required onchange="updatePrice()">
                                     <option value="">Select package</option>
-                                    <option value="basic">Basic - $500</option>
-                                    <option value="standard">Standard - $1,200</option>
-                                    <option value="premium">Premium - $2,500</option>
+                                    <option value="basic">📸 Basic - $500</option>
+                                    <option value="standard">🎥 Standard - $1,200</option>
+                                    <option value="premium">👑 Premium - $2,500</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -393,16 +572,16 @@
                         </div>
                         <div class="form-group">
                             <label>Special Requirements</label>
-                            <textarea id="requirements" rows="3" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                            <textarea id="requirements" rows="3" style="width: 100%; padding: 10px; border: 2px solid var(--gold-light); border-radius: 5px; background: var(--cream);"></textarea>
                         </div>
-                        <button type="submit" class="btn" style="margin-top: 20px;">Create Booking</button>
+                        <button type="submit" class="btn" style="margin-top: 20px;">📸 Create Booking</button>
                     </form>
                 </div>
             </div>
 
             <!-- Clients -->
             <div id="clients" class="section">
-                <h2 style="margin-bottom: 20px;">Client Management</h2>
+                <h2>👥 Client Management</h2>
                 <div class="form-section">
                     <h3 class="form-title">Add New Client</h3>
                     <div class="form-grid">
@@ -419,16 +598,17 @@
                             <input type="text" id="newClientPhone">
                         </div>
                         <div class="form-group">
-                            <button class="btn" onclick="addClient()">Add Client</button>
+                            <button class="btn" onclick="addClient()" style="margin-top: 23px;">➕ Add Client</button>
                         </div>
                     </div>
                 </div>
+                <h3 class="form-title">Client List</h3>
                 <div id="clientList"></div>
             </div>
 
             <!-- Packages -->
             <div id="packages" class="section">
-                <h2 style="margin-bottom: 20px;">Service Packages</h2>
+                <h2>💎 Service Packages</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                     <div class="package-card">
                         <h3>📸 Basic Package</h3>
@@ -578,19 +758,19 @@
             const completedJobs = bookings.filter(b => b.status === 'completed').length;
             
             statsGrid.innerHTML = `
-                <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                <div class="stat-card">
                     <h3>Total Bookings</h3>
                     <div class="number">${bookings.length}</div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                <div class="stat-card">
                     <h3>Total Revenue</h3>
                     <div class="number">$${totalRevenue.toLocaleString()}</div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                <div class="stat-card">
                     <h3>Total Clients</h3>
                     <div class="number">${clients.length}</div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                <div class="stat-card">
                     <h3>Completed Jobs</h3>
                     <div class="number">${completedJobs}</div>
                 </div>
@@ -605,7 +785,7 @@
                 .slice(0, 5);
             
             if (recent.length === 0) {
-                recentBookingsDiv.innerHTML = '<p style="color: #666;">No bookings yet. Create your first booking!</p>';
+                recentBookingsDiv.innerHTML = '<p style="color: var(--brown);">No bookings yet. Create your first booking!</p>';
                 return;
             }
             
@@ -619,8 +799,8 @@
                         <span class="booking-status status-${booking.status}">${booking.status}</span>
                     </div>
                     <div class="booking-actions">
-                        <button class="action-btn btn-success" onclick="changeStatus(${booking.id}, 'confirmed')">Confirm</button>
-                        <button class="action-btn" style="background: #17a2b8;" onclick="changeStatus(${booking.id}, 'completed')">Complete</button>
+                        <button class="action-btn btn-success" onclick="changeStatus(${booking.id}, 'confirmed')">✓ Confirm</button>
+                        <button class="action-btn" style="background: #17a2b8;" onclick="changeStatus(${booking.id}, 'completed')">✓ Complete</button>
                     </div>
                 </div>
             `).join('');
@@ -638,7 +818,7 @@
             filteredBookings.sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
             
             if (filteredBookings.length === 0) {
-                container.innerHTML = '<p style="color: #666;">No bookings found.</p>';
+                container.innerHTML = '<p style="color: var(--brown);">No bookings found.</p>';
                 return;
             }
             
@@ -781,7 +961,7 @@
             if (!container) return;
             
             if (clients.length === 0) {
-                container.innerHTML = '<p style="color: #666;">No clients added yet.</p>';
+                container.innerHTML = '<p style="color: var(--brown);">No clients added yet.</p>';
                 return;
             }
             
@@ -790,10 +970,10 @@
                 return `
                     <div class="client-card">
                         <div>
-                            <h3>${client.name}</h3>
-                            <div>📧 ${client.email}</div>
-                            <div>📱 ${client.phone || 'N/A'}</div>
-                            <div>📅 Bookings: ${clientBookings.length}</div>
+                            <h3 style="color: var(--brown);">${client.name}</h3>
+                            <div style="color: var(--black-medium);">📧 ${client.email}</div>
+                            <div style="color: var(--black-medium);">📱 ${client.phone || 'N/A'}</div>
+                            <div style="color: var(--brown-dark);">📅 Bookings: ${clientBookings.length}</div>
                         </div>
                         <button class="action-btn btn-danger" onclick="deleteClient(${client.id})">Remove</button>
                     </div>
@@ -829,9 +1009,8 @@
         loadData();
         updateDashboard();
         
-        console.log('PhotoShot Pro is ready!');
-        console.log('Bookings loaded:', bookings.length);
-        console.log('Clients loaded:', clients.length);
+        console.log('PhotoShot Pro - Gold Edition is ready! 🎨');
+        console.log('Color scheme: Gold, Black, Brown');
     </script>
 </body>
 </html>
