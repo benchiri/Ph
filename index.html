@@ -548,13 +548,13 @@
                                 <label>Package *</label>
                                 <select id="packageSelect" required onchange="updatePrice()">
                                     <option value="">Select package</option>
-                                    <option value="basic">📸 Basic - $500</option>
-                                    <option value="standard">🎥 Standard - $1,200</option>
-                                    <option value="premium">👑 Premium - $2,500</option>
+                                    <option value="basic">📸 Basic - sh 500</option>
+                                    <option value="standard">🎥 Standard - sh 1,200</option>
+                                    <option value="premium">👑 Premium - sh 2,500</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Price ($)</label>
+                                <label>Price (sh)</label>
                                 <input type="number" id="bookingPrice" required min="0">
                             </div>
                             <div class="form-group">
@@ -612,7 +612,7 @@
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                     <div class="package-card">
                         <h3>📸 Basic Package</h3>
-                        <div class="package-price">$500</div>
+                        <div class="package-price">sh 500</div>
                         <ul>
                             <li>✓ 2 Hours Coverage</li>
                             <li>✓ 50 Edited Photos</li>
@@ -622,7 +622,7 @@
                     </div>
                     <div class="package-card">
                         <h3>🎥 Standard Package</h3>
-                        <div class="package-price">$1,200</div>
+                        <div class="package-price">sh 1,200</div>
                         <ul>
                             <li>✓ 5 Hours Coverage</li>
                             <li>✓ 150 Edited Photos</li>
@@ -632,7 +632,7 @@
                     </div>
                     <div class="package-card">
                         <h3>👑 Premium Package</h3>
-                        <div class="package-price">$2,500</div>
+                        <div class="package-price">sh 2,500</div>
                         <ul>
                             <li>✓ Full Day Coverage</li>
                             <li>✓ 400+ Edited Photos</li>
@@ -764,7 +764,7 @@
                 </div>
                 <div class="stat-card">
                     <h3>Total Revenue</h3>
-                    <div class="number">$${totalRevenue.toLocaleString()}</div>
+                    <div class="number">sh ${totalRevenue.toLocaleString()}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Clients</h3>
@@ -795,7 +795,7 @@
                         <h3>${booking.clientName} - ${booking.eventType}</h3>
                         <div class="booking-detail">📅 ${new Date(booking.eventDate).toLocaleString()}</div>
                         <div class="booking-detail">📍 ${booking.location || 'No location'}</div>
-                        <div class="booking-detail">💰 $${booking.price}</div>
+                        <div class="booking-detail">💰 sh ${booking.price}</div>
                         <span class="booking-status status-${booking.status}">${booking.status}</span>
                     </div>
                     <div class="booking-actions">
@@ -832,7 +832,7 @@
                         <div class="booking-detail">⏱️ ${booking.duration || 0} hours</div>
                         <div class="booking-detail">📍 ${booking.location || 'N/A'}</div>
                         <div class="booking-detail">💼 ${booking.package}</div>
-                        <div class="booking-detail">💰 $${booking.price}</div>
+                        <div class="booking-detail">💰 sh ${booking.price}</div>
                         ${booking.requirements ? `<div class="booking-detail">📝 ${booking.requirements}</div>` : ''}
                         <span class="booking-status status-${booking.status}">${booking.status}</span>
                     </div>
@@ -994,7 +994,7 @@
         function exportBookings() {
             let csv = 'Client Name,Email,Phone,Event Type,Package,Price,Date,Status,Location,Requirements\n';
             bookings.forEach(b => {
-                csv += `"${b.clientName}","${b.email}","${b.phone}","${b.eventType}","${b.package}",${b.price},"${b.eventDate}","${b.status}","${b.location || ''}","${b.requirements || ''}"\n`;
+                csv += `"${b.clientName}","${b.email}","${b.phone}","${b.eventType}","${b.package}",sh ${b.price},"${b.eventDate}","${b.status}","${b.location || ''}","${b.requirements || ''}"\n`;
             });
             
             const blob = new Blob([csv], { type: 'text/csv' });
@@ -1010,7 +1010,7 @@
         updateDashboard();
         
         console.log('PhotoShot Pro - Gold Edition is ready! 🎨');
-        console.log('Color scheme: Gold, Black, Brown');
+        console.log('Currency: Kenyan Shillings (sh)');
     </script>
 </body>
-</html>
+                                                                              </html>
